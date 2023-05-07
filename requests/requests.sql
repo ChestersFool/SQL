@@ -3,7 +3,7 @@
 SELECT Last_name, Student_name, Surname FROM students;
 
 -- !2
-SELECT `Result` `ID_Record`
+SELECT `Result`, `ID_Record`
 FROM results
 WHERE `Result` > 150;
 
