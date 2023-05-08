@@ -1,4 +1,4 @@
--- Active: 1682793559755@@127.0.0.1@3306@lab7
+-- Active: 1682924378687@@127.0.0.1@3306@lab7
 -- !1
 SELECT Last_name, Student_name, Surname FROM students;
 
@@ -28,8 +28,13 @@ FROM subjects
 ORDER BY `Event_date`;
 
 -- !7 age calculation
-SELECT `Last_name` `Student_name` `Surname`, 
+SELECT `Last_name`, `Student_name`, `Surname`, `Date_of_birth`, CASE 
+    WHEN  (MONTH(`Date_of_birth`) > MONTH(CURDATE())) OR (MONTH(`Date_of_birth`) = MONTH(CURDATE()) AND DAY(`Date_of_birth`) > DAY(CURDATE())) 
+    THEN -1 + floor(YEAR(CURDATE()) - YEAR(`Date_of_birth`))
+    ELSE 0 + floor(YEAR(CURDATE()) - YEAR(`Date_of_birth`))
+    END AS `Age`
 FROM students;
+
 -- !8 !9 агрегатних функцій
 SELECT s.`Last_name`, s.`Student_name`, s.`Surname`, MAX(res.`Result`) `Max_result`
 FROM students s, records r, results res
@@ -43,13 +48,21 @@ from students s, records r, results res
 where r.`Student` = s.`ID` AND res.`ID_Record` = r.`ID`
 GROUP BY s.`Last_name`, s.`Student_name`, s.`Surname`
 HAVING COUNT(res.`Result`) = 2;
+
 -- !11 групування та сортуванням. (GROUP BY, ORDER BY)
 SELECT s.`Last_name`, s.`Student_name`, s.`Surname`, AVG(res.`Result`) `Avg_result`
 from students s, records r, results res
 where r.`Student` = s.`ID` AND res.`ID_Record` = r.`ID`
 GROUP BY s.`Last_name`, s.`Student_name`, s.`Surname`
 ORDER BY `Avg_result`;
+
 -- !12 групування та умови, що накладаються на групи та сортуванням (GROUP BY, ORDER BY, HAVING)
+SELECT e.`Last_name` ,e.`Eximiner_name`, e.`Surname`, COUNT(r.`ID`) `Count_records`
+from examiners e, records r 
+WHERE e.`ID` = r.`Senior_examiner`
+GROUP BY e.`Last_name` ,e.`Eximiner_name`, e.`Surname`
+HAVING COUNT(r.`ID`) != 0
+ORDER BY `Count_records`;
 
 -- !13 простого підзапиту
 SELECT DISTINCT s.`Last_name`, s.`Student_name`, s.`Surname`, AVG(res.`Result`) `Avg_result`
