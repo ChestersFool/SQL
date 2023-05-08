@@ -28,10 +28,11 @@ FROM subjects
 ORDER BY `Event_date`;
 
 -- !7 age calculation
-SELECT `Last_name`, `Student_name`, `Surname`, `Date_of_birth`, CASE 
-    WHEN  (MONTH(`Date_of_birth`) > MONTH(CURDATE())) OR (MONTH(`Date_of_birth`) = MONTH(CURDATE()) AND DAY(`Date_of_birth`) > DAY(CURDATE())) 
-    THEN -1 + floor(YEAR(CURDATE()) - YEAR(`Date_of_birth`))
-    ELSE 0 + floor(YEAR(CURDATE()) - YEAR(`Date_of_birth`))
+SELECT `Last_name`, `Student_name`, `Surname`, `Date_of_birth`, 
+    CASE 
+        WHEN  (MONTH(`Date_of_birth`) > MONTH(CURDATE())) OR (MONTH(`Date_of_birth`) = MONTH(CURDATE()) AND DAY(`Date_of_birth`) > DAY(CURDATE())) 
+        THEN -1 + floor(YEAR(CURDATE()) - YEAR(`Date_of_birth`))
+        ELSE 0 + floor(YEAR(CURDATE()) - YEAR(`Date_of_birth`))
     END AS `Age`
 FROM students;
 
